@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # graphql-demo(FrontEnd)
 
 ## Project setup
@@ -32,3 +33,6 @@ npm run test:unit
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+=======
+# graphql-demo-FrontEnd-
+>>>>>>> ef7e837f944f66eb79cc814dd7a973c080a49729
