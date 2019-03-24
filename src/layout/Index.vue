@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-header height="50px">
+      <el-button type="text" @click="goto('register')">註冊</el-button>
       <el-button type="text" @click="">登出</el-button>
     </el-header>
     <router-view />
@@ -9,7 +10,11 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-export default class Layout extends Vue { }
+export default class Layout extends Vue {
+  public goto() {
+    this.$router.push({ name: 'register' });
+  }
+}
 </script>
 
 <style lang="scss" scoped>

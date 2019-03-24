@@ -9,10 +9,17 @@ import './styles/main.scss';
 import './plugins/axios';
 import './plugins/element-ui';
 
+/* mixins */
+import { AxiosMixin } from './mixins/axios';
+
+import { createProvider } from './vue-apollo';
+Vue.mixin(AxiosMixin);
+
 Vue.config.productionTip = false;
 
 new Vue({
   router,
   store,
+  apolloProvider: createProvider(),
   render: h => h(App)
 }).$mount('#app');

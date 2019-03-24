@@ -14,6 +14,14 @@ export default new Router({
       component: layout,
       children: [
         {
+          path: 'home',
+          name: 'home',
+          component: () => import('./views/Home.vue'),
+          meta: {
+            title: 'home'
+          }
+        },
+        {
           path: 'login',
           name: 'login',
           component: () => import('./views/Login.vue'),
@@ -22,11 +30,11 @@ export default new Router({
           }
         },
         {
-          path: 'home',
-          name: 'home',
-          component: () => import('./views/Home.vue'),
+          path: 'register',
+          name: 'register',
+          component: () => import('./views/Register.vue'),
           meta: {
-            title: 'home'
+            title: 'register'
           }
         }
       ]

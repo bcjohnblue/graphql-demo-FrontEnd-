@@ -1,6 +1,6 @@
 <template>
   <div id="login_main">
-    <h1>登入</h1>
+    <h1>註冊</h1>
     <el-card class="login-box">
       <!-- card body -->
       <div>
@@ -10,16 +10,23 @@
           :ref="form.attrs.ref"
           v-bind="form.attrs"
         >
-          <el-form-item prop="Account">
+          <el-form-item prop="name">
             <el-input
-              v-model="form.data.Account"
+              v-model="form.data.name"
+              placeholder="請輸入姓名"
+              style="width: 80%;"
+            ></el-input>
+          </el-form-item>
+          <el-form-item prop="email">
+            <el-input
+              v-model="form.data.email"
               placeholder="請輸入帳號"
               style="width: 80%;"
             ></el-input>
           </el-form-item>
-          <el-form-item prop="Password">
+          <el-form-item prop="password">
             <el-input
-              v-model="form.data.Password"
+              v-model="form.data.password"
               placeholder="請輸入密碼"
               style="width: 80%;"
               type="password"
@@ -29,8 +36,8 @@
             type="primary"
             class="login-button"
             :loading="btn.loading"
-            @click="loginClick"
-            >登入</el-button
+            @click="registerClick"
+            >註冊</el-button
           >
         </el-form>
       </div>
@@ -41,30 +48,34 @@
 <script lang="ts">
 interface Form {
   data: {
-    Account: string,
-    Password: string
+    email: string,
+    name: string,
+    password: string,
   };
   attrs: {
     [propName: string]: any;
   };
   rules: {
-    Account: object[],
-    Password: object[]
+    email: object[],
+    name: object[],
+    password: object[],
   };
 }
 
 import { Component, Vue } from 'vue-property-decorator';
+import gql from 'graphql-tag';
 
 @Component
-export default class Login extends Vue {
+export default class Register extends Vue {
   public btn: {} = {
     loading: false
   };
 
   public form: Form = {
     data: {
-      Account: '',
-      Password: ''
+      name: '',
+      email: '',
+      password: ''
     },
     attrs: {
       labelWidth: '100px',
@@ -72,7 +83,14 @@ export default class Login extends Vue {
       ref: 'loginForm'
     },
     rules: {
-      Account: [
+      name: [
+        {
+          required: true,
+          message: '請輸入姓名',
+          trigger: 'blur'
+        }
+      ],
+      email: [
         {
           required: true,
           message: '請輸入帳號',
@@ -90,7 +108,7 @@ export default class Login extends Vue {
           trigger: 'blur'
         }
       ],
-      Password: [
+      password: [
         {
           required: true,
           message: '請輸入密碼',
@@ -107,20 +125,56 @@ export default class Login extends Vue {
   };
 
   public mounted() {
-    // window.login = this;
+    // window.register = this;
   }
 
   public setForm() {
     // this.form = {};
   }
 
-  public async loginClick() {
+  public async registerClick() {
     try {
       const ref = this.form.attrs.ref;
-      console.log(ref);
 
       await (this.$refs[ref] as Vue & { validate: () => boolean }).validate();
-      // this.$axios.post('')
+      // const { name, email, password } = this.form.data;
+      // const query = `mutation {
+      //     createUser(name: ${name}, email: ${email}, password: ${password}) {
+      //       name
+      //       email
+      //     }
+      //   }
+      // `;
+      // createUser($name: string, $email: string, $password: string) {
+      // const variables = {
+      //   ...this.form.data
+      // };
+
+      // const dataInput = { query };
+      // console.log(dataInput);
+
+      const result = await this.$apollo.mutate({
+        mutation: gql`mutation ($name: String, $email: String!, $password: String) {
+          createUser(name: $name, email: $email, password: $password) {
+            name
+            email
+          }
+        }`,
+        variables: {
+          name: this.form.data.name,
+          email: this.form.data.email,
+          password: this.form.data.password
+        }
+      });
+
+
+
+
+
+
+      // const result = this.$axios.post(this.apiUrl, dataInput);
+      console.log(result);
+
     } catch (err) {
       console.log(err);
 
