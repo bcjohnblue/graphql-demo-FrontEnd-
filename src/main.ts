@@ -13,6 +13,7 @@ import './plugins/element-ui';
 import { AxiosMixin } from './mixins/axios';
 
 import { createProvider } from './vue-apollo';
+
 Vue.mixin(AxiosMixin);
 
 Vue.config.productionTip = false;
@@ -20,6 +21,6 @@ Vue.config.productionTip = false;
 new Vue({
   router,
   store,
-  apolloProvider: createProvider(),
+  apolloProvider: createProvider({ wsEndpoint: null }),
   render: h => h(App)
 }).$mount('#app');

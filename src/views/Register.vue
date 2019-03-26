@@ -67,7 +67,7 @@ import gql from 'graphql-tag';
 
 @Component
 export default class Register extends Vue {
-  public btn: {} = {
+  public btn: { loading: boolean } = {
     loading: false
   };
 
@@ -137,48 +137,38 @@ export default class Register extends Vue {
       const ref = this.form.attrs.ref;
 
       await (this.$refs[ref] as Vue & { validate: () => boolean }).validate();
-      // const { name, email, password } = this.form.data;
-      // const query = `mutation {
-      //     createUser(name: ${name}, email: ${email}, password: ${password}) {
-      //       name
-      //       email
-      //     }
-      //   }
-      // `;
-      // createUser($name: string, $email: string, $password: string) {
-      // const variables = {
-      //   ...this.form.data
-      // };
 
-      // const dataInput = { query };
-      // console.log(dataInput);
+      this.btn.loading = true;
 
-      const result = await this.$apollo.mutate({
-        mutation: gql`mutation ($name: String, $email: String!, $password: String) {
-          createUser(name: $name, email: $email, password: $password) {
+      const result = await this.createUser();
+      console.log(result);
+      this.btn.loading = false;
+      this.$message.success('帳戶註冊成功!');
+      this.$router.push({ name: 'login' });
+
+    } catch (err) {
+      console.log(err);
+      this.btn.loading = false;
+      this.$message.error(err.message);
+    }
+  }
+
+  public createUser() {
+    const { name, email, password } = this.form.data;
+
+    return this.$apollo.mutate({
+      mutation: gql`mutation ($name: String, $email: String!, $password: String) {
+          createUser(userInput: {name: $name, email: $email, password: $password}) {
             name
             email
           }
         }`,
-        variables: {
-          name: this.form.data.name,
-          email: this.form.data.email,
-          password: this.form.data.password
-        }
-      });
-
-
-
-
-
-
-      // const result = this.$axios.post(this.apiUrl, dataInput);
-      console.log(result);
-
-    } catch (err) {
-      console.log(err);
-
-    }
+      variables: {
+        name,
+        email,
+        password
+      }
+    });
   }
 
 
