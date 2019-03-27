@@ -10,16 +10,16 @@
           :ref="form.attrs.ref"
           v-bind="form.attrs"
         >
-          <el-form-item prop="Account">
+          <el-form-item prop="email">
             <el-input
-              v-model="form.data.Account"
+              v-model="form.data.email"
               placeholder="請輸入帳號"
               style="width: 80%;"
             ></el-input>
           </el-form-item>
-          <el-form-item prop="Password">
+          <el-form-item prop="password">
             <el-input
-              v-model="form.data.Password"
+              v-model="form.data.password"
               placeholder="請輸入密碼"
               style="width: 80%;"
               type="password"
@@ -41,15 +41,15 @@
 <script lang="ts">
 interface Form {
   data: {
-    Account: string,
-    Password: string
+    email: string,
+    password: string
   };
   attrs: {
     [propName: string]: any;
   };
   rules: {
-    Account: object[],
-    Password: object[]
+    email: object[],
+    password: object[]
   };
 }
 
@@ -57,14 +57,14 @@ import { Component, Vue } from 'vue-property-decorator';
 
 @Component
 export default class Login extends Vue {
-  public btn: {} = {
+  public btn: { loading: boolean } = {
     loading: false
   };
 
   public form: Form = {
     data: {
-      Account: '',
-      Password: ''
+      email: '',
+      password: ''
     },
     attrs: {
       labelWidth: '100px',
@@ -72,7 +72,7 @@ export default class Login extends Vue {
       ref: 'loginForm'
     },
     rules: {
-      Account: [
+      email: [
         {
           required: true,
           message: '請輸入帳號',
@@ -90,7 +90,7 @@ export default class Login extends Vue {
           trigger: 'blur'
         }
       ],
-      Password: [
+      password: [
         {
           required: true,
           message: '請輸入密碼',
@@ -108,6 +108,7 @@ export default class Login extends Vue {
 
   public mounted() {
     // window.login = this;
+
   }
 
   public setForm() {
@@ -117,14 +118,38 @@ export default class Login extends Vue {
   public async loginClick() {
     try {
       const ref = this.form.attrs.ref;
-      console.log(ref);
 
       await (this.$refs[ref] as Vue & { validate: () => boolean }).validate();
-      // this.$axios.post('')
-    } catch (err) {
-      console.log(err);
+      this.btn.loading = true;
+      const result = await this.login();
+      this.btn.loading = false;
+      console.log(result);
 
+
+    } catch (err) {
+      if (!err) return;
+      console.log(err);
+      this.btn.loading = false;
+      this.$message.error(err.message);
     }
+  }
+
+  public login() {
+    const { email, password } = this.form.data;
+
+    return this.$apollo.mutate({
+      mutation: gql`mutation ($email: String!, $password: String!) {
+          login(loginInput: {email: $email, password: $password}) {
+            name
+            userId
+            token
+          }
+        }`,
+      variables: {
+        email,
+        password
+      }
+    });
   }
 
 

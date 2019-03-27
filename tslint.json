@@ -26,6 +26,7 @@
     }],
     "arrow-parens": [true, "ban-single-arg-parens"],
     "strictPropertyInitialization": false,
-    "no-console": [false, "log", "error"]
+    "no-console": [false, "log", "error"],
+    "curly": false
   }
 }

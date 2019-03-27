@@ -63,7 +63,7 @@ interface Form {
 }
 
 import { Component, Vue } from 'vue-property-decorator';
-import gql from 'graphql-tag';
+// import gql from 'graphql-tag';
 
 @Component
 export default class Register extends Vue {
@@ -147,6 +147,7 @@ export default class Register extends Vue {
       this.$router.push({ name: 'login' });
 
     } catch (err) {
+      if (!err) return;
       console.log(err);
       this.btn.loading = false;
       this.$message.error(err.message);

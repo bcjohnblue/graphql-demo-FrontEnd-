@@ -15,3 +15,9 @@ declare module 'vue/types/vue' {
     $apollo: { mutate: any };
   }
 }
+
+declare global {
+  interface Window {
+    gql: any;
+  }
+}

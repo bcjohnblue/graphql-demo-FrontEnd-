@@ -13,6 +13,8 @@ import './plugins/element-ui';
 import { AxiosMixin } from './mixins/axios';
 
 import { createProvider } from './vue-apollo';
+import gql from 'graphql-tag';
+window.gql = gql;
 
 Vue.mixin(AxiosMixin);
 
