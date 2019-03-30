@@ -32,6 +32,7 @@
     "sass-loader": "^7.1.0",
     "ts-jest": "^23.0.0",
     "tslint": "^5.14.0",
+    "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.2.1",
     "typescript-tslint-plugin": "^0.3.1",
     "vue-cli-plugin-apollo": "^0.19.2",

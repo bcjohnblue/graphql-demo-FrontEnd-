@@ -10,7 +10,7 @@ export default new Router({
     {
       path: '/',
       name: 'layout',
-      redirect: 'home',
+      redirect: 'product',
       component: layout,
       children: [
         {
@@ -35,6 +35,22 @@ export default new Router({
           component: () => import('./views/Register.vue'),
           meta: {
             title: 'register'
+          }
+        },
+        {
+          path: 'product',
+          name: 'product',
+          component: () => import('./views/Product.vue'),
+          meta: {
+            title: 'product'
+          }
+        },
+        {
+          path: 'cart',
+          name: 'cart',
+          component: () => import('./views/Cart.vue'),
+          meta: {
+            title: 'cart'
           }
         }
       ]

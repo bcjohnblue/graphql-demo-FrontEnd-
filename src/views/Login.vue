@@ -4,18 +4,9 @@
     <el-card class="login-box">
       <!-- card body -->
       <div>
-        <el-form
-          :model="form.data"
-          :rules="form.rules"
-          :ref="form.attrs.ref"
-          v-bind="form.attrs"
-        >
+        <el-form :model="form.data" :rules="form.rules" :ref="form.attrs.ref" v-bind="form.attrs">
           <el-form-item prop="email">
-            <el-input
-              v-model="form.data.email"
-              placeholder="請輸入帳號"
-              style="width: 80%;"
-            ></el-input>
+            <el-input v-model="form.data.email" placeholder="請輸入帳號" style="width: 80%;"></el-input>
           </el-form-item>
           <el-form-item prop="password">
             <el-input
@@ -30,8 +21,7 @@
             class="login-button"
             :loading="btn.loading"
             @click="loginClick"
-            >登入</el-button
-          >
+          >登入</el-button>
         </el-form>
       </div>
     </el-card>
@@ -121,11 +111,12 @@ export default class Login extends Vue {
 
       await (this.$refs[ref] as Vue & { validate: () => boolean }).validate();
       this.btn.loading = true;
-      const result = await this.login();
+      const response = await this.login();
+      this.$store.dispatch('saveUserInfo', response.data.login)
       this.btn.loading = false;
-      console.log(result);
 
-
+      this.$router.push({ name: 'product' })
+      console.log(response);
     } catch (err) {
       if (!err) return;
       console.log(err);
