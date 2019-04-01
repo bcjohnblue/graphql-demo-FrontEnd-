@@ -44,6 +44,7 @@ interface Form {
 }
 
 import { Component, Vue } from 'vue-property-decorator';
+import { onLogin } from '@/vue-apollo'
 
 @Component
 export default class Login extends Vue {
@@ -113,6 +114,7 @@ export default class Login extends Vue {
       this.btn.loading = true;
       const response = await this.login();
       this.$store.dispatch('saveUserInfo', response.data.login)
+      onLogin(this.$apollo.provider.defaultClient, response.data.login.token)
       this.btn.loading = false;
 
       this.$router.push({ name: 'product' })

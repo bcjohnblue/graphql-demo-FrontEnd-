@@ -48,7 +48,7 @@ export default class Product extends Vue {
   };
 
   public mounted() {
-    window.product = this;
+    window.cart = this;
     this.getCart();
   }
 
